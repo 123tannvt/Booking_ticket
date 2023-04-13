@@ -1,0 +1,16 @@
+export './splash_welcom/splash_screen.dart';
+export './splash_welcom/welcom_screen.dart';
+export './login/login_screen.dart';
+export './sign_up/sign_up_screen.dart';
+export './home/home_screen.dart';
+export './bottomNavBar/bottomBar.dart';
+export './ticket/ticket_view.dart';
+export './hotel/hotel_screen.dart';
+export './search/search_screen.dart';
+export './hotel/home_hotel_screen.dart';
+export './ticket/ticket_screen.dart';
+export './profile/edit_profile_screen.dart';
+export './search/widget/select_date.dart';
+export './search/widget/guest_and_room.dart';
+export './search/search_flight.dart';
+export './payment/payment.dart';
