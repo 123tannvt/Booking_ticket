@@ -10,15 +10,14 @@ class Palette {
   static const grayTicket = Color(0xFF526799);
   static const Color orangeTicket = Color(0xFFF37B67);
   static const Color textColor = Color(0xFF3b3b3b);
+  static const Color background = Color(0xFFFFFFFF);
+  static const Color red = Color(0xffD42029);
 }
 
 class Grandients {
-  static const grandientsLogin = LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Palette.second,
-        Color(0xFF6CA8F1),
-        Palette.primary,
-      ]);
+  static const grandientsLogin = LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
+    Palette.second,
+    Color(0xFF6CA8F1),
+    Palette.primary,
+  ]);
 }

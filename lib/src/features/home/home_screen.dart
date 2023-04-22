@@ -29,7 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
               _headerHome(),
               Box.h(15),
               TextField(
-                onEditingComplete: () => print("search destination"),
+                onEditingComplete: () {
+                  print('search');
+                },
                 decoration: const InputDecoration(
                   hintText: 'Search your destinalsion',
                   prefixIcon: Padding(
@@ -76,11 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Box.h(15),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                    children: ticketList
-                        .map((e) =>
-                            TicketView(isColor: null, ticketMondayModel: e))
-                        .toList()),
+                child: Row(children: ticketList.map((e) => TicketView(isColor: null, ticketMondayModel: e)).toList()),
               ),
               Box.h(30),
               Row(
@@ -104,10 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Box.h(10),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                    children: hotelList
-                        .map((e) => HotelScreen(hotelModel: e))
-                        .toList()),
+                child: Row(children: hotelList.map((e) => HotelScreen(hotelModel: e)).toList()),
               ),
             ],
           ),

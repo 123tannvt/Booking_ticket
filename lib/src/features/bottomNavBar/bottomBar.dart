@@ -1,10 +1,11 @@
-import 'package:book_tiket/src/config/config.dart';
 import 'package:book_tiket/src/features/profile/profile_screen.dart';
 import 'package:book_tiket/src/features/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
+import '../../config/config.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});

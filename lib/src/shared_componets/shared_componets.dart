@@ -6,3 +6,7 @@ export './dashline/column_layout.dart';
 export './list_airport/list_search_airport.dart';
 export './double_text_home/double_text_home.dart';
 export './text_field/input_text.dart';
+export './dialog/dialog.dart';
+export './dialog/dialog_success.dart';
+export './loading/loading.dart';
+export './validate/validators.dart';

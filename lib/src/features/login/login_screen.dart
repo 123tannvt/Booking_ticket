@@ -1,7 +1,9 @@
 import 'package:book_tiket/src/config/config.dart';
+import 'package:book_tiket/src/features/login/cubit/login_cubit.dart';
 import 'package:book_tiket/src/shared_componets/shared_componets.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,7 +13,57 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _rememberME = false;
+  late final TextEditingController emailController;
+  late final TextEditingController passwordController;
+  late bool isActiveButton;
+  String? err;
+
+  @override
+  void initState() {
+    super.initState();
+    isActiveButton = false;
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    passwordController.addListener(validateButton);
+    emailController.addListener(validatEmail);
+  }
+
+  @override
+  void dispose() {
+    passwordController.removeListener(validateButton);
+    emailController.removeListener(validatEmail);
+    passwordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
+
+  void validateButton() {
+    setState(() {
+      if (validators.isValidPassword(passwordController.text)) {
+        isActiveButton = true;
+        err = null;
+      } else if (passwordController.text.isEmpty) {
+        isActiveButton = false;
+        err = 'Không  bỏ trống mật khẩu';
+      } else {
+        err = null;
+      }
+    });
+  }
+
+  void validatEmail() {
+    setState(() {
+      if (validators.isVaildEmail(emailController.text)) {
+        isActiveButton = true;
+        err = null;
+      } else if (emailController.text.isEmpty) {
+        isActiveButton = false;
+        err = 'không bỏ trống email';
+      } else {
+        err = null;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
             height: double.infinity,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 40, vertical: 120),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 120),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -49,18 +100,46 @@ class _LoginScreenState extends State<LoginScreen> {
                   Box.h(20),
                   _buildPasswordTF(),
                   Box.h(10),
+                  // BlocListener<LoginCubit, LoginState>(listener: (context, state) {
+                  //   if (state is LoginStateLoading) {
+                  //     showLoading();
+                  //   }
+                  //   if(state is LoginStateSuccess){
+
+                  //   }
+                  // }),
                   _buildForgotPasswordBtn(),
                   Box.h(10),
                   _buildCheckRememberPass(),
                   Box.h(10),
-                  ButtonPrimary(
-                    action: () {
-                      AppNavigator.push(Routes.bottomNavBar);
+                  BlocConsumer<LoginCubit, LoginState>(
+                    listener: (context, state) {
+                      if (state is LoginStateLoading) {
+                        showLoading();
+                        dismissLoading();
+                      }
+                      if (state is LoginStateSuccess) {
+                        dismissLoading();
+                        AppNavigator.push(Routes.bottomNavBar);
+                      }
+                      if (state is LoginStateFasle) {
+                        dismissLoadingShowError(err);
+                      }
                     },
-                    text: 'Đăng nhập',
-                    height: size.height * 0.07,
-                    width: size.height * 0.4,
-                    textStyle: KLabelStyle,
+                    builder: (context, state) {
+                      return ButtonPrimary(
+                        action: () {},
+                        //  context.read<LoginCubit>().login(
+                        //       email: emailController.text,
+                        //       password: passwordController.text,
+                        //     )
+                        // ,
+                        text: 'Đăng nhập',
+                        height: size.height * 0.07,
+                        width: size.height * 0.4,
+                        textStyle: KLabelStyle,
+                      );
+                    },
                   ),
                   Box.h(15),
                   _buildSignUpbtn()
@@ -87,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 60.0,
           decoration: KBoxDecorationStyle,
           child: TextField(
+            controller: emailController,
             style: AppFont.t.white,
             decoration: const InputDecoration(
               border: InputBorder.none,
@@ -120,6 +200,8 @@ class _LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.center,
           decoration: KBoxDecorationStyle,
           child: TextField(
+            obscureText: true,
+            controller: passwordController,
             style: AppFont.t.white,
             decoration: const InputDecoration(
               border: InputBorder.none,
@@ -162,12 +244,12 @@ class _LoginScreenState extends State<LoginScreen> {
               unselectedWidgetColor: Palette.white,
             ),
             child: Checkbox(
-              value: _rememberME,
+              value: isActiveButton,
               checkColor: Colors.green,
               activeColor: Colors.white,
               onChanged: (value) => {
                 setState(() {
-                  _rememberME = value!;
+                  isActiveButton = value!;
                 }),
               },
             ),
